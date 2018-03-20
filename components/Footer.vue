@@ -1,5 +1,9 @@
 <template>
-  <footer>
-    Visit our website for more documentation : <a href="https://nuxtjs.org" target="_blank">nuxtjs.org</a>
+  <footer class="footer">
+    <div class="container">
+      <p style="text-align: right;">
+        &copy; 2018 takemitsu.
+      </p>
+    </div>
   </footer>
 </template>

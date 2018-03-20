@@ -1,6 +1,5 @@
 <template>
   <section class="container">
-    <img src="~assets/img/logo.png" alt="Nuxt.js Logo" class="logo" />
     <h1 class="title">
       User
     </h1>
@@ -36,19 +35,4 @@ export default {
 </script>
 
 <style scoped>
-.title
-{
-  margin-top: 30px;
-}
-.info
-{
-  font-weight: 300;
-  color: #9aabb1;
-  margin: 0;
-  margin-top: 10px;
-}
-.button
-{
-  margin-top: 30px;
-}
 </style>
