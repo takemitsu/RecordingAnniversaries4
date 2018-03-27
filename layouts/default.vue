@@ -3,14 +3,14 @@
     <nav class="navbar is-info" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
         <a class="navbar-item" href="/">
-          Recording Aniversary
+          Recording Anniversaries
         </a>
       </div>
       <div class="navbar-menu">
         <div class="navbar-start">
-          <a class="navbar-item" href="/">
-            Menu
-          </a>
+          <nuxt-link :to="{name: 'users'}" class="navbar-item">
+            Users
+          </nuxt-link>
         </div>
       </div>
     </nav>
