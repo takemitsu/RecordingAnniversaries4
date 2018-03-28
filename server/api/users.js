@@ -1,27 +1,39 @@
 import { Router } from 'express'
+import User from '../models/user'
 
 const router = Router()
 
-// Mock Users
-const users = [
-  { name: 'Alexandre' },
-  { name: 'Pooya' },
-  { name: 'Sébastien' }
-]
-
 /* GET users listing. */
 router.get('/users', function (req, res, next) {
-  res.json(users)
+  User.find({}, function (err, users) {
+    if (err) throw err
+    res.json(users.map(user => {
+      return serializeUser(user)
+    }))
+  })
 })
 
 /* GET user by ID. */
-router.get('/users/:id', function (req, res, next) {
-  const id = parseInt(req.params.id)
-  if (id >= 0 && id < users.length) {
-    res.json(users[id])
-  } else {
-    res.sendStatus(404)
+router.get('/users/:id', function (req, res) {
+  User.findOne({
+    _id: req.params.id
+  }, function (err, user) {
+    if (err) throw err
+
+    res.json(serializeUser(user))
+  })
+})
+
+function serializeUser (user) {
+  return {
+    name: user.name
   }
+}
+
+router.get('/logout', function (req, res) {
+  // console.log(req.decoded)
+  // TODO: authenticate を 1秒 で更新する
+  res.send({})
 })
 
 export default router
