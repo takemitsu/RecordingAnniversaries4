@@ -17,8 +17,14 @@
 
   export default {
     name: 'id',
-    asyncData ({ params, error }) {
-      return axios.get('/api/users/' + params.id)
+    middleware: 'authenticated',
+
+    asyncData ({ params, error, store }) {
+      return axios.get('/api/users/' + params.id, {
+        headers: {
+          'x-access-token': store.state.authUser.token
+        }
+      })
         .then((res) => {
           return { user: res.data }
         })

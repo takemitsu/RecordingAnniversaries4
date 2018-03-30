@@ -26,14 +26,9 @@ router.get('/users/:id', function (req, res) {
 
 function serializeUser (user) {
   return {
+    id: user._id,
     name: user.name
   }
 }
-
-router.get('/logout', function (req, res) {
-  // console.log(req.decoded)
-  // TODO: authenticate を 1秒 で更新する
-  res.send({})
-})
 
 export default router
