@@ -5,6 +5,8 @@
 ## Build Setup
 
 ``` bash
+$ cp .env.example .env
+
 # install dependencies
 $ npm install # Or yarn install
 
