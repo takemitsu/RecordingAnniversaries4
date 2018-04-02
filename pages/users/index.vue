@@ -23,7 +23,7 @@
     async asyncData ({ store }) {
       let { data } = await axios.get('/api/users', {
         headers: {
-          'x-access-token': store.state.authUser.token
+          'x-access-token': store.state.user.authUser.token
         }
       })
       return { users: data }

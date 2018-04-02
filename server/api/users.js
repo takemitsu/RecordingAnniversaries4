@@ -40,7 +40,7 @@ router.put('/users/:id', function (req, res) {
       user.name = req.body.username
     }
 
-    if (req.body.password.length > 0) {
+    if (req.body.password && req.body.password.length > 0) {
       user.password = req.body.password
     }
 

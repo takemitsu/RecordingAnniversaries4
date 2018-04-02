@@ -66,7 +66,7 @@
     methods: {
       async register () {
         try {
-          await this.$store.dispatch('register', {
+          await this.$store.dispatch('user/register', {
             username: this.formSignin.name,
             password: this.formSignin.password
           })

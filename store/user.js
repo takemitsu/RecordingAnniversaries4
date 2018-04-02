@@ -61,7 +61,7 @@ export const actions = {
         password: password
       }, {
         headers: {
-          'x-access-token': this.state.authUser.token
+          'x-access-token': this.state.user.authUser.token
         }
       })
     } catch (error) {
@@ -81,7 +81,7 @@ export const actions = {
     try {
       await axios.delete('/api/users/' + encodeURIComponent(id), {
         headers: {
-          'x-access-token': this.state.authUser.token
+          'x-access-token': this.state.user.authUser.token
         }
       })
     } catch (error) {

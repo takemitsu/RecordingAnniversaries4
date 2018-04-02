@@ -2,9 +2,8 @@
     <section class="container">
         <div class="columns is-mobile">
             <div class="column is-half is-offset-one-quarter">
-                <form class="field" v-if="!$store.state.authUser" @submit.prevent="login">
+                <form class="field" v-if="!$store.state.user.authUser" @submit.prevent="login">
                     <h2 class="title">Login</h2>
-
                     <article class="message is-danger" v-if="formSignin.error">
                         <div class="message-header">
                             <p>Error</p>
@@ -68,7 +67,7 @@ export default {
   methods: {
     async login () {
       try {
-        await this.$store.dispatch('login', {
+        await this.$store.dispatch('user/login', {
           username: this.formSignin.name,
           password: this.formSignin.password
         })

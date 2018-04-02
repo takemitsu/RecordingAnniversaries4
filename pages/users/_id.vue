@@ -65,26 +65,22 @@
     name: 'id',
     middleware: 'authenticated',
 
-    asyncData ({ params, error, store }) {
-      return axios.get('/api/users/' + params.id, {
+    async asyncData ({ store, error, params }) {
+      let { data } = await axios.get('/api/users/' + params.id, {
         headers: {
-          'x-access-token': store.state.authUser.token
+          'x-access-token': store.state.user.authUser.token
         }
       })
-        .then((res) => {
-          return {
-            formSignin: {
-              id: res.data.id,
-              name: res.data.name,
-              password: null,
-              error: null
-            }
-          }
-        })
-        .catch((e) => {
-          error({ statusCode: 404, message: 'User not found' })
-        })
+      return {
+        formSignin: {
+          id: data.id,
+          name: data.name,
+          password: null,
+          error: null
+        }
+      }
     },
+
     head () {
       return {
         title: `User: ${this.formSignin.name}`
@@ -93,7 +89,7 @@
     methods: {
       async updateUser () {
         try {
-          await this.$store.dispatch('updateUser', {
+          await this.$store.dispatch('user/updateUser', {
             id: this.formSignin.id,
             username: this.formSignin.name,
             password: this.formSignin.password
@@ -112,7 +108,7 @@
         }
 
         try {
-          await this.$store.dispatch('deleteUser', {id: this.formSignin.id})
+          await this.$store.dispatch('user/deleteUser', {id: this.formSignin.id})
           this.$router.push({name: 'index'})
         } catch (e) {
           this.formSignin.error = e.message
