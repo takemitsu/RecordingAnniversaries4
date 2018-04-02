@@ -24,6 +24,52 @@ router.get('/users/:id', function (req, res) {
   })
 })
 
+// PUT user by ID
+router.put('/users/:id', function (req, res) {
+
+  // TODO: validate
+
+  User.findOne({
+    _id: req.params.id
+  }, function (err, user) {
+    if (err) throw err
+
+    console.log(req.body)
+
+    if (req.body.username.length > 0) {
+      user.name = req.body.username
+    }
+
+    if (req.body.password.length > 0) {
+      user.password = req.body.password
+    }
+
+    console.log(user)
+
+    user.save(function (err, updatedUser) {
+      if (err) throw err
+      console.log('User saved successfully: ' + updatedUser.name)
+
+      res.json(serializeUser(updatedUser))
+    })
+  })
+})
+
+// Delete user by ID
+router.delete('/users/:id', function (req, res) {
+  User.findOne({
+    _id: req.params.id
+  }, function (err, user) {
+    if (err) throw err
+
+    user.remove(function (err) {
+      if (err) throw err
+
+      res.send({})
+    })
+  })
+})
+
 function serializeUser (user) {
   return {
     id: user._id,

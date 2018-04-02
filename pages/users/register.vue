@@ -17,7 +17,7 @@
 
                     <article class="message is-success" v-if="formSignin.success">
                         <div class="message-header">
-                            <p>Error</p>
+                            <p>Success</p>
                             <button type="button" class="delete" aria-label="delete" v-on:click="formSignin.success = null"></button>
                         </div>
                         <div class="message-body">

@@ -51,5 +51,49 @@ export const actions = {
   async logout ({ commit }) {
     await axios.post('/api/logout')
     commit('SET_USER', null)
+  },
+
+  // update user
+  async updateUser ({ commit }, {id, username, password}) {
+    try {
+      await axios.put('/api/users/' + encodeURIComponent(id), {
+        username: username,
+        password: password
+      }, {
+        headers: {
+          'x-access-token': this.state.authUser.token
+        }
+      })
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        if (error.response.data && error.response.data.message) {
+          throw new Error(error.response.data.message)
+        } else {
+          throw new Error('Bad credentials')
+        }
+      }
+      throw error
+    }
+  },
+
+  // delete user
+  async deleteUser ({ commit }, { id }) {
+    try {
+      await axios.delete('/api/users/' + encodeURIComponent(id), {
+        headers: {
+          'x-access-token': this.state.authUser.token
+        }
+      })
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        if (error.response.data && error.response.data.message) {
+          throw new Error(error.response.data.message)
+        } else {
+          throw new Error('Bad credentials')
+        }
+      }
+      throw error
+    }
   }
+
 }
