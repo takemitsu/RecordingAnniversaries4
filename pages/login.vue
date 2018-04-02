@@ -29,7 +29,12 @@
                     </div>
                     <div class="field">
                         <div class="control">
-                            <button type="submit" class="button">Login</button>
+                            <button type="submit" class="button is-primary">Login</button>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <nuxt-link :to="{name: 'users-register'}" class="button is-outlined">Register</nuxt-link>
                         </div>
                     </div>
                 </form>
@@ -70,6 +75,7 @@ export default {
         this.formSignin.name = ''
         this.formSignin.password = ''
         this.formSignin.error = null
+        this.$router.push('/users')
       } catch (e) {
         this.formSignin.error = e.message
       }

@@ -11,6 +11,7 @@
           <nuxt-link :to="{name: 'users'}" class="navbar-item">
             Users
           </nuxt-link>
+          <a class="navbar-item" @click="logout" v-if="$store.state.authUser">Logout</a>
         </div>
       </div>
     </nav>
@@ -29,6 +30,16 @@ import MyFooter from '~/components/Footer.vue'
 export default {
   components: {
     MyFooter
+  },
+  methods: {
+    async logout () {
+      try {
+        await this.$store.dispatch('logout')
+        this.$router.push('/login')
+      } catch (e) {
+        alert(e.message)
+      }
+    }
   }
 }
 </script>

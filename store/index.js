@@ -17,6 +17,21 @@ export const actions = {
       commit('SET_USER', req.session.authUser)
     }
   },
+  async register ({ commit }, { username, password }) {
+    try {
+      await axios.post('/api/register', { username, password })
+      commit('SET_USER', null)
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        if (error.response.data && error.response.data.message) {
+          throw new Error(error.response.data.message)
+        } else {
+          throw new Error('Bad credentials')
+        }
+      }
+      throw error
+    }
+  },
   async login ({ commit }, { username, password }) {
     try {
       const { data } = await axios.post('/api/authenticate', { username, password })
