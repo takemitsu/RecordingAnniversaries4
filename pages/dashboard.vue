@@ -1,9 +1,5 @@
 <template>
     <section class="container">
-        <!-- <img src="~assets/img/logo.png" alt="Nuxt.js Logo" class="logo" /> -->
-
-        <nuxt-link class="button is-primary is-outlined" :to="{name:'users'}">Users</nuxt-link>
-
         <div class="columns is-mobile">
             <div class="column is-half is-offset-one-quarter">
                 <div class="content">

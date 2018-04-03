@@ -74,7 +74,7 @@ export default {
         this.formSignin.name = ''
         this.formSignin.password = ''
         this.formSignin.error = null
-        this.$router.push('/users')
+        this.$router.push({ name: 'dashboard' })
       } catch (e) {
         this.formSignin.error = e.message
       }

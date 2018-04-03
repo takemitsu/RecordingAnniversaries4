@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken'
 import users from './users'
 import signin from './signin'
 // import setup from './setup'
+import groups from './groups'
 
 // load .env
 require('dotenv').config()
@@ -49,6 +50,8 @@ router.use(function (req, res, next) {
     next()
   })
 })
+
+router.use(groups)
 
 // Add USERS Routes
 router.use(users)

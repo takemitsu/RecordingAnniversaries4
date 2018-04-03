@@ -11,6 +11,9 @@
           <nuxt-link :to="{name: 'users'}" class="navbar-item">
             Users
           </nuxt-link>
+          <nuxt-link :to="{name: 'groups'}" class="navbar-item">
+            Groups
+          </nuxt-link>
           <a class="navbar-item" @click="logout" v-if="$store.state.authUser">Logout</a>
         </div>
       </div>
