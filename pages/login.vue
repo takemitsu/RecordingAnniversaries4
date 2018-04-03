@@ -38,9 +38,8 @@
                     </div>
                 </form>
                 <div v-else>
-                    <h2 class="title">Hello!</h2>
                     <div class="field">
-                        <nuxt-link class="button is-primary is-outlined" :to="{name: 'users'}">Users</nuxt-link>
+                        <nuxt-link class="button is-primary is-outlined" :to="{name: 'dashboard'}">Dashboard</nuxt-link>
                     </div>
                     <div class="field">
                         <div class="control">
@@ -81,7 +80,7 @@ export default {
     },
     async logout () {
       try {
-        await this.$store.dispatch('logout')
+        await this.$store.dispatch('user/logout')
       } catch (e) {
         this.formSignin.error = e.message
       }

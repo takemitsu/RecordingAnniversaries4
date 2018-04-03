@@ -26,6 +26,7 @@
     "nuxt": "^1.0.0-rc3",
     "source-map-support": "^0.4.15",
     "vue-flatpickr-component": "^7.0.0",
+    "vuex-persistedstate": "^2.5.1",
     "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {

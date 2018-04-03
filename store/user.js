@@ -1,8 +1,7 @@
 import axios from '~/plugins/axios'
 
 export const state = () => ({
-  authUser: null,
-  hoge: 'null'
+  authUser: null
 })
 
 export const mutations = {
