@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import Group from '../models/group'
+import uuid from 'node-uuid'
 
 const router = Router()
 
@@ -48,7 +49,8 @@ router.post('/groups', function (req, res) {
     }
     const newGroup = new Group({
       name: req.body.name,
-      user_id: req.decoded.id
+      user_id: req.decoded.id,
+      desc: req.body.desc
     })
     newGroup.save(function (err) {
       if (err) throw err
@@ -96,10 +98,10 @@ router.put('/groups/:id', function (req, res) {
   }, function (err, group) {
     if (err) throw err
 
-    group.user_id = req.decoded.id
     if (req.body.name.length > 0) {
       group.name = req.body.name
     }
+    group.desc = req.body.desc
 
     group.save(function (err, updatedGroup) {
       if (err) throw err
@@ -125,10 +127,106 @@ router.delete('/groups/:id', function (req, res) {
   })
 })
 
+// Add Anniv
+router.post('/groups/:id', function (req, res) {
+  // これに POST するのは anniv だけ、という前提
+
+  Group.findOne({
+    _id: req.params.id
+  }, function (err, group) {
+    if (err) throw err
+
+    group.annivs.push({
+      id: uuid.v4(),
+      name: req.body.name,
+      desc: req.body.desc,
+      anniv_at: req.body.anniv_at
+    })
+
+    group.save(function (err, updatedGroup) {
+      if (err) throw err
+      console.log('User saved successfully: ' + updatedGroup.name)
+
+      res.json(serializeGroup(updatedGroup))
+    })
+  })
+})
+
+// update anniv
+router.put('/groups/:group_id/:anniv_id', function (req, res) {
+  Group.findOne({
+    _id: req.params.group_id
+  }, function (err, group) {
+    if (err) throw err
+
+    let anniv = null
+    group.annivs.forEach(function (tempAnniv) {
+      console.log(tempAnniv._id.toString(), req.params.anniv_id)
+      if (tempAnniv._id.toString() === req.params.anniv_id) {
+        anniv = tempAnniv
+      }
+    })
+    if (anniv === null) {
+      res.status(401).json({
+        success: false,
+        message: 'anniv not found'
+      })
+      return
+    }
+
+    anniv.name = req.body.name
+    anniv.desc = req.body.desc
+    anniv.anniv_at = req.body.anniv_at
+
+    group.save(function (err, updatedGroup) {
+      if (err) throw err
+      console.log('User saved successfully: ' + updatedGroup.name)
+
+      res.json(serializeGroup(updatedGroup))
+    })
+  })
+})
+
+// delete anniv
+router.delete('/groups/:group_id/:anniv_id', function (req, res) {
+  Group.findOne({
+    _id: req.params.group_id
+  }, function (err, group) {
+    if (err) throw err
+
+    let index = null
+    group.annivs.forEach(function (tempAnniv, tmpIndex) {
+      console.log(tempAnniv._id.toString(), req.params.anniv_id)
+      if (tempAnniv._id.toString() === req.params.anniv_id) {
+        index = tmpIndex
+      }
+    })
+    if (index === null) {
+      res.status(401).json({
+        success: false,
+        message: 'anniv not found'
+      })
+      return
+    }
+
+    // 削除する
+    group.annivs.splice(index, 1)
+
+    group.save(function (err, updatedGroup) {
+      if (err) throw err
+      console.log('User saved successfully: ' + updatedGroup.name)
+
+      res.json(serializeGroup(updatedGroup))
+    })
+  })
+})
+
 function serializeGroup (group) {
   return {
     id: group._id,
-    name: group.name
+    name: group.name,
+    desc: group.desc,
+    annivs: group.annivs
   }
 }
 

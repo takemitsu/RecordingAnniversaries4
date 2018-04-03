@@ -19,8 +19,10 @@
     "dotenv": "^5.0.1",
     "express": "^4.15.3",
     "jsonwebtoken": "^8.2.0",
+    "moment": "^2.22.0",
     "mongoose": "^5.0.11",
     "morgan": "^1.9.0",
+    "node-uuid": "^1.4.8",
     "nuxt": "^1.0.0-rc3",
     "source-map-support": "^0.4.15",
     "whatwg-fetch": "^2.0.3"

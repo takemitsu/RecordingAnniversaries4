@@ -12,6 +12,7 @@
             <thead>
                 <tr>
                     <th>名前</th>
+                    <th>メモ</th>
                     <th>操作</th>
                 </tr>
             </thead>
@@ -22,6 +23,7 @@
                             {{ group.name }}
                         </nuxt-link>
                     </td>
+                    <td>{{ group.desc }}</td>
                     <td>
                         <button class="button is-info is-small" @click="edit(group)">編集</button>
                         <button class="button is-danger is-small" @click="remove(group)">削除</button>
@@ -29,7 +31,6 @@
                 </tr>
             </tbody>
         </table>
-
 
         <div class="field">
             <div class="control">
@@ -63,6 +64,12 @@
                             <input type="text" class="input" placeholder="名前" v-model="group.name">
                         </div>
                     </div>
+                    <div class="field">
+                        <label class="label">メモ</label>
+                        <div class="control">
+                            <input type="text" class="input" placeholder="メモ" v-model="group.desc">
+                        </div>
+                    </div>
                 </section>
                 <footer class="modal-card-foot">
                     <button class="button is-success" @click="save">保存</button>
@@ -91,6 +98,7 @@
         group: {
           id: null,
           name: '',
+          desc: '',
           error: null
         }
       }
@@ -102,13 +110,13 @@
             'x-access-token': this.$store.state.user.authUser.token
           }
         })
-        console.log('getGroups', data)
         this.groups = data
       },
       initializeData () {
         this.group = {
           id: null,
           name: '',
+          desc: '',
           error: null
         }
       },
@@ -126,24 +134,22 @@
         this.group.error = null
         try {
           if (this.group.id == null) {
-            await axios.post('/api/groups', {
-              name: this.group.name
-            }, {
+            await axios.post('/api/groups', this.group, {
               headers: {
                 'x-access-token': this.$store.state.user.authUser.token
               }
+            }).then((res) => {
+              this.afterSave()
             })
           } else {
-            await axios.put('/api/groups/' + encodeURIComponent(this.group.id), {
-              name: this.group.name
-            }, {
+            await axios.put('/api/groups/' + encodeURIComponent(this.group.id), this.group, {
               headers: {
                 'x-access-token': this.$store.state.user.authUser.token
               }
+            }).then((res) => {
+              this.afterSave()
             })
           }
-          this.getGroups()
-          this.hiddenModal()
         } catch (error) {
           if (error.response && error.response.status === 401) {
             if (error.response.data && error.response.data.message) {
@@ -153,6 +159,10 @@
             }
           }
         }
+      },
+      afterSave () {
+        this.getGroups()
+        this.hiddenModal()
       },
       edit (group) {
         this.initializeData()

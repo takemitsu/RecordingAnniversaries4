@@ -8,11 +8,13 @@
       </div>
       <div class="navbar-menu">
         <div class="navbar-start">
-          <nuxt-link :to="{name: 'users'}" class="navbar-item">
-            Users
-          </nuxt-link>
           <nuxt-link :to="{name: 'groups'}" class="navbar-item">
             Groups
+          </nuxt-link>
+        </div>
+        <div class="navbar-end">
+          <nuxt-link :to="{name: 'users'}" class="navbar-item">
+            Users
           </nuxt-link>
           <a class="navbar-item" @click="logout" v-if="$store.state.user.authUser">Logout</a>
         </div>
@@ -36,6 +38,10 @@ export default {
   },
   methods: {
     async logout () {
+      if (confirm('ログアウトしますか') === false) {
+        return
+      }
+
       try {
         await this.$store.dispatch('user/logout')
         this.$router.push('/login')
