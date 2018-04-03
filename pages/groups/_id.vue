@@ -70,7 +70,7 @@
                     <div class="field">
                         <label class="label">日付</label>
                         <div class="control">
-                            <input type="text" class="input" placeholder="メモ" v-model="anniv.anniv_at">
+                            <flat-pickr class="input" v-model="anniv.anniv_at"></flat-pickr>
                         </div>
                     </div>
                 </section>
@@ -86,9 +86,13 @@
 <script>
   import axios from '~/plugins/axios'
   import moment from 'moment'
+  import flatPickr from 'vue-flatpickr-component'
+  import 'flatpickr/dist/flatpickr.css'
 
   export default {
-
+    components: {
+      flatPickr
+    },
     middleware: 'authenticated',
 
     async asyncData ({ store, error, params }) {
