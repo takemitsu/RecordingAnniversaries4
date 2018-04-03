@@ -70,7 +70,8 @@ router.post('/authenticate', function (req, res) {
     // when valid -> create token
     const token = jwt.sign({
       id: user._id,
-      name: user.name
+      name: user.name,
+      admin: user.admin
     }, superSecret, {
       expiresIn: '24h'
     })

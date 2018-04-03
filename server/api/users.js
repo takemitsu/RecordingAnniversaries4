@@ -5,12 +5,23 @@ const router = Router()
 
 /* GET users listing. */
 router.get('/users', function (req, res, next) {
-  User.find({}, function (err, users) {
-    if (err) throw err
-    res.json(users.map(user => {
-      return serializeUser(user)
-    }))
-  })
+  if (req.decoded.admin) {
+    User.find({}, function (err, users) {
+      if (err) throw err
+      res.json(users.map(user => {
+        return serializeUser(user)
+      }))
+    })
+  } else {
+    User.find({
+      _id: req.decoded.id
+    }, function (err, users) {
+      if (err) throw err
+      res.json(users.map(user => {
+        return serializeUser(user)
+      }))
+    })
+  }
 })
 
 /* GET user by ID. */

@@ -14,7 +14,7 @@
           <nuxt-link :to="{name: 'groups'}" class="navbar-item">
             Groups
           </nuxt-link>
-          <a class="navbar-item" @click="logout" v-if="$store.state.authUser">Logout</a>
+          <a class="navbar-item" @click="logout" v-if="$store.state.user.authUser">Logout</a>
         </div>
       </div>
     </nav>
@@ -37,7 +37,7 @@ export default {
   methods: {
     async logout () {
       try {
-        await this.$store.dispatch('logout')
+        await this.$store.dispatch('user/logout')
         this.$router.push('/login')
       } catch (e) {
         alert(e.message)
