@@ -1,22 +1,67 @@
 <template>
     <section class="container">
-        <div class="columns is-mobile">
-            <div class="column is-half is-offset-one-quarter">
-                <div class="content">
-                    <h1>store について</h1>
-                    <p>
-                        index.vue を読み込むときに nuxtServerInit が呼ばれるせいで state.authUser が initialize されてしまうので、アレなときには state をみてリンク先を変更するなどのアレが必要になると推測。まぁその前にログアウトとか実装しろよっていう話しなのだが。。
-                    </p>
-                </div>
+        <article class="message is-info" v-for="(group) in groups">
+            <div class="message-header">
+                <nuxt-link :to="{ name: 'groups-id', params: { id: group.id }}">
+                    {{ group.name }}
+                </nuxt-link>
             </div>
-        </div>
+            <div class="message-body">
+                <ul>
+                    <li v-for="(anniv) in group.annivs">
+                        {{ anniv.anniv_at }} {{ anniv.name }}
+                    </li>
+                </ul>
+            </div>
+        </article>
+
     </section>
 </template>
 
 <script>
-  export default {
-    middleware: 'authenticated'
+import axios from '~/plugins/axios'
+import moment from 'moment'
+
+export default {
+  middleware: 'authenticated',
+
+  async asyncData ({store}) {
+    let { data } = await axios.get('/api/groups', {
+      headers: {
+        'x-access-token': store.state.user.authUser.token
+      }
+    })
+
+    let groups = []
+    if (data instanceof Array) {
+      data.forEach((group, index) => {
+        if (group.annivs.length > 0) {
+          groups.push(group)
+        }
+      })
+
+      moment.locale('ja')
+
+      groups.forEach((group) => {
+        group.annivs.forEach((anniv) => {
+          anniv.anniv_at = moment(anniv.anniv_at).format('YYYY-MM-DD (ddd)')
+          console.log(anniv.anniv_at)
+        })
+      })
+    }
+
+    return {
+      groups: groups,
+      isModal: '',
+      group: {
+        id: null,
+        name: '',
+        desc: '',
+        error: null
+      }
+    }
   }
+}
 </script>
 
 <style scoped>
